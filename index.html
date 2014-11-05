@@ -7,22 +7,22 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico" />
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
-    var announcementsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw/gviz/tq?tq=';
+    var announcementsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw/gviz/tq?tq=',
+        mealsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs/gviz/tq?tq=';
     
     // this is basically a trick to avoid using Google's huge APIs for something so simple.
     var google = { visualization: { Query: {
-        setResponse: function (res) { handleAnnouncementsResponse(res); } 
+        setResponse: function (res) { handleResponse(res); } 
     } } };
     
+    
+    var d = new Date(),
+        dateStr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    
     function injectAnnouncementsRequest () {
-        
-        // create a query for today's date.
-        var d       = new Date();
-        var dateStr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-        var query   = "select * where D=date '"+dateStr+"' order by A desc limit 1";
+        var query = "select * where D=date '"+dateStr+"' order by A desc limit 1";
         
         // inject a script tag for Google's spreadsheet APIs.
-        console.log(query);
         var script  = new Element('script', {
             src:  announcementsQueryURL + encodeURIComponent(query),
             type: 'text/javascript'
@@ -31,45 +31,106 @@
         
     }
     
+    function injectMealsRequest () {
+        var query = "select * where F=date '"+dateStr+"' order by A desc limit 1";
+        
+        // inject a script tag for Google's spreadsheet APIs.
+        var url = mealsQueryURL + encodeURIComponent(query);
+        console.log(query);
+        console.log(url);
+        var script  = new Element('script', {
+            src:   url,
+            type: 'text/javascript'
+        });
+        
+        document.head.adopt(script);
+    }
+    
+    function handleResponse (res) {
+        
+        // some error occurred.
+        if (res.status != 'ok') return;
+        
+        if (res.table.cols[1].label == 'General announcements')
+            handleAnnouncementsResponse(res);
+        else
+            handleMenuResponse(res);
+    }
+    
     function handleAnnouncementsResponse (res) {
-        var announcements = $('to-announcements');
-        var giveUp = function (reason) {
-            announcements.innerText = reason ? reason :
-                "Today's announcements have not yet been published.";
-        };
+        var announcements = $('to-announcements'),
+            meetings      = $('to-meetings');
+        
         // consider: if not logged in, this will be a redirect...
         // how will Chrome handle a <script> tag leading to text/html?
         // probably just won't do anything.
-        
-        // some error occurred.
-        if (res.status != 'ok')
-            return giveUp('An error occurred.');
-        
+        console.log(res);
+                
         // the row will be the first and only row, since the query
         // limits to one result.
         var row = res.table.rows[0];
-        if (!row)
-            return giveUp();
-        
+        if (!row) return;
+         
         // 0 (A) Timestamp
         // 1 (B) Announcements
         // 2 (C) Username
         // 3 (D) Date for announcements
+        // 4 (E) Meetings
         
         // the date is not today.
         if (row.c[3].v.toDateString() != new Date().toDateString())
-            return giveUp();
+            return;
         
-        announcements.innerText = parseAnnouncements(row.c[1].v);
+        announcements.innerText = row.c[1].v;
+        meetings.innerText = row.c[4].v;
+        
+        // show these if there's info to put there.
+        if (announcements.innerText) {
+            announcements.setStyle('display', 'block');
+            $('to-announcements-header').setStyle('display', 'block');
+        }
+        if (meetings.innerText) {
+            meetings.setStyle('display', 'block');
+            $('to-meetings-header').setStyle('display', 'block');
+        }
+        
+        
     }
     
-    // I may need to parse certain formatting if necessary,
-    // which will be done here.
-    function parseAnnouncements (string) {
-        return string;
+    function handleMenuResponse (res) {
+        console.log('meals?', res);
+        var meals = $('to-meals'),
+            lunch = $('to-lunch'),
+            bkfst = $('to-breakfast'),
+            row   = res.table.rows[0];
+        if (!row) return;
+        
+        // 0 (A) Timestamp
+        // 1 (B) Username
+        // 2 (C) Breakfast
+        // 3 (D) Lunch
+        // 4 (E) Salad choice
+        // 5 (F) Date it applies to
+        
+        // set lunch and breakfast.
+        bkfst.innerText = row.c[2].v;
+        lunch.innerText = row.c[3].v;
+        
+        // if there's a salad choice, append that.
+        if (row.c[4].v)
+            lunch.innerText += "\nor " + row.c[4].v + ' salad';
+        
+        // show these if there's info to put there.
+        if (bkfst.innerText || lunch.innerText) {
+            meals.setStyle('display', 'block');
+            $('to-meals-header').setStyle('display', 'block');
+        }
+        
     }
+
     
     document.addEvent('domready', injectAnnouncementsRequest);
+    document.addEvent('domready', injectMealsRequest);
 </script>
 <style type="text/css">
     * {
@@ -109,6 +170,7 @@
     
     #to-announcements, #to-meetings, #to-meals {
         padding: 10px;
+        display: none;
     }
     
     #to-sidebar h2 {
@@ -116,6 +178,7 @@
         padding: 10px;
         color: #fff;
         font-size: 20px;
+        display: none;
     }
     
 </style>
@@ -124,42 +187,21 @@
 <body>
     <div id="to-sidebar">
         <img id="to-sidebar-logo" src="header.png" alt="Frontier" />
-        <h2>Announcements</h2>
+        
+        <h2 id="to-announcements-header">Announcements</h2>
         <div id="to-announcements"></div>
-        <h2>Meetings</h2>
-        <div id="to-meetings">
-            SRT Meetings:
+        
+        <h2 id="to-meetings-header">Meetings</h2>
+        <div id="to-meetings"></div>
 
-Friday: FFA Officers Meeting – A29
-National Honor Society Meeting – B7
-<br/><br/>
-The Fall Sports Athletic Awards Program will be held next week in the Auditorium at 6:00 p.m. The
-following sports will be recognized on the designated dates:
-<br/><br/>
-
-Monday, November 10: Varsity & Jr. High Football
-<br/><br/>
-
-Wednesday, November 12: Cross Country Team
-<br/><br/>
-
-Thursday, November 13: Varsity & Jr. High Volleyball
-        </div>
-        <h2>Meals</h2>
+        <h2 id="to-meals-header">Meals</h2>
         <div id="to-meals">
-
             <h3>Breakfast</h3>
-                breakfast bacon scramble or variety cereal<br/>
-                fruit choice<br/>
-                variety fruit juice<br/>
-                variety milk
+            <span id="to-breakfast"></span>
             <h3 style="margin-top: 10px">Lunch</h3>
-                orange chicken<br/>
-                vegetable fried rice<br/>
-                green pepper strips<br/>
-                baby carrots<br/>
-                applesauce or orange slices
+            <span id="to-lunch"></span>
         </div>
+        
     </div>
     <div id="to-left">
         <iframe frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=ffffff" name="_symFrame" width="920px" height="100%"></iframe>
