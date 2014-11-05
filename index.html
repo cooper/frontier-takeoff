@@ -5,6 +5,7 @@
 <title>Frontier Takeoff</title>
 <script type="text/javascript" src="mootools.js"></script>
 <link rel="icon" type="image/x-icon" href="favicon.ico" />
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
     var announcementsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw/gviz/tq?tq=';
     
@@ -74,11 +75,10 @@
     * {
         padding: 0;
         margin: 0;
-        font-family: sans-serif;
     }
     
     body {
-        //background-color: #000;
+        font-family: 'Open Sans';
     }
     
     #to-sidebar, #to-left {
@@ -91,11 +91,9 @@
         float: right;
         width: calc(100% - 920px);
         border-left: 1px solid #afa0a0;
-        background-color: white;
         right: 0;
         z-index: 1;
         overflow-y: auto;
-        background-color: #eee;
     }
     
     #to-left {
@@ -106,18 +104,62 @@
     
     #to-sidebar-logo {
         width: 100%;
+        display: block;
     }
     
-    #to-announcements {
+    #to-announcements, #to-meetings, #to-meals {
         padding: 10px;
     }
+    
+    #to-sidebar h2 {
+        background-color:  #d64141;
+        padding: 10px;
+        color: #fff;
+        font-size: 20px;
+    }
+    
 </style>
 </head>
     
 <body>
     <div id="to-sidebar">
         <img id="to-sidebar-logo" src="header.png" alt="Frontier" />
+        <h2>Announcements</h2>
         <div id="to-announcements"></div>
+        <h2>Meetings</h2>
+        <div id="to-meetings">
+            SRT Meetings:
+
+Friday: FFA Officers Meeting – A29
+National Honor Society Meeting – B7
+<br/><br/>
+The Fall Sports Athletic Awards Program will be held next week in the Auditorium at 6:00 p.m. The
+following sports will be recognized on the designated dates:
+<br/><br/>
+
+Monday, November 10: Varsity & Jr. High Football
+<br/><br/>
+
+Wednesday, November 12: Cross Country Team
+<br/><br/>
+
+Thursday, November 13: Varsity & Jr. High Volleyball
+        </div>
+        <h2>Meals</h2>
+        <div id="to-meals">
+
+            <h3>Breakfast</h3>
+                breakfast bacon scramble or variety cereal<br/>
+                fruit choice<br/>
+                variety fruit juice<br/>
+                variety milk
+            <h3 style="margin-top: 10px">Lunch</h3>
+                orange chicken<br/>
+                vegetable fried rice<br/>
+                green pepper strips<br/>
+                baby carrots<br/>
+                applesauce or orange slices
+        </div>
     </div>
     <div id="to-left">
         <iframe frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=ffffff" name="_symFrame" width="920px" height="100%"></iframe>
