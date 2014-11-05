@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<title>Frontier Takeoff</title>
+<script type="text/javascript" src="mootools.js"></script>
+<script type="text/javascript">
+    var announcementsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw/gviz/tq?tq=select%20*%20order%20by%20A%20desc%20limit%201%0A';
+    
+    // this is basically a trick to avoid using Google's huge APIs for something so simple.
+    var google = { visualization: { Query: {
+        setResponse: function (res) { handleAnnouncementsResponse(res); } 
+    } } };
+    
+    function injectAnnouncementsRequest () {
+        var script = new Element('script', {
+            src:  announcementsQueryURL,
+            type: 'text/javascript'
+        });
+        document.head.adopt(script);
+    }
+    
+    function handleAnnouncementsResponse (res) {
+        var announcements = $('to-announcements');
+        var giveUp = function (reason) {
+            announcements.innerText = reason ? reason : 'Unable to load the announcements.';
+        };
+        // consider: if not logged in, this will be a redirect...
+        // how will Chrome handle a <script> tag leading to text/html?
+        // probably just won't do anything.
+        
+        // some error occurred.
+        if (res.status != 'ok')
+            return giveUp('An error occurred.');
+        
+        // the row will be the first and only row, since the query
+        // limits to one result.
+        var row = res.table.rows[0];
+        if (!row)
+            return giveUp('No entries found.');
+        
+        // 0 (A) Timestamp
+        // 1 (B) Announcements
+        // 2 (C) Username
+        // 3 (D) Date for announcements
+        
+        // the date is not today.
+        if (row.c[3].v.toDateString() != new Date().toDateString())
+            return giveUp("Today's announcements have not yet been published.");
+        
+        announcements.innerText = parseAnnouncements(row.c[1].v);
+    }
+    
+    // I may need to parse certain formatting if necessary,
+    // which will be done here.
+    function parseAnnouncements (string) {
+        return string;
+    }
+    
+    document.addEvent('domready', injectAnnouncementsRequest);
+</script>
+<style type="text/css">
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: sans-serif;
+    }
+    
+    body {
+        //background-color: #000;
+    }
+    
+    #to-sidebar, #to-left {
+        height: 100%;
+        position: fixed; 
+        top: 0;
+    }
+    
+    #to-sidebar {
+        float: right;
+        width: 445px;
+        border-left: 1px solid #afa0a0;
+        background-color: white;
+        right: 0;
+        z-index: 1;
+        overflow-y: auto;
+        background-color: #eee;
+    }
+    
+    #to-left {
+        width: 900px;
+        left: 0;
+        z-index: 0;
+    }
+    
+    #to-sidebar-logo {
+        width: 100%;
+    }
+    
+    #to-announcements {
+        padding: 10px;
+    }
+</style>
+</head>
+    
+<body>
+    <div id="to-sidebar">
+        <img id="to-sidebar-logo" src="header.png" alt="Frontier" />
+        <div id="to-announcements"></div>
+    </div>
+    <div id="to-left">
+        <iframe frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=ffffff" name="_symFrame" width="920px" height="100%"></iframe>
+    </div>
+</body>
+</html>
