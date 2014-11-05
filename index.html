@@ -5,7 +5,7 @@
 <script type="text/javascript" src="mootools.js"></script>
 <link rel="icon" type="image/x-icon" href="favicon.ico" />
 <script type="text/javascript">
-    var announcementsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw/gviz/tq?tq=select%20*%20order%20by%20A%20desc%20limit%201%0A';
+    var announcementsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw/gviz/tq?tq=';
     
     // this is basically a trick to avoid using Google's huge APIs for something so simple.
     var google = { visualization: { Query: {
@@ -13,17 +13,27 @@
     } } };
     
     function injectAnnouncementsRequest () {
-        var script = new Element('script', {
-            src:  announcementsQueryURL,
+        
+        // create a query for today's date.
+        var d       = new Date();
+        var dateStr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+        var query   = "select * where D=date '"+dateStr+"' order by A desc limit 1";
+        
+        // inject a script tag for Google's spreadsheet APIs.
+        console.log(query);
+        var script  = new Element('script', {
+            src:  announcementsQueryURL + encodeURIComponent(query),
             type: 'text/javascript'
         });
         document.head.adopt(script);
+        
     }
     
     function handleAnnouncementsResponse (res) {
         var announcements = $('to-announcements');
         var giveUp = function (reason) {
-            announcements.innerText = reason ? reason : 'Unable to load the announcements.';
+            announcements.innerText = reason ? reason :
+                "Today's announcements have not yet been published.";
         };
         // consider: if not logged in, this will be a redirect...
         // how will Chrome handle a <script> tag leading to text/html?
@@ -37,7 +47,7 @@
         // limits to one result.
         var row = res.table.rows[0];
         if (!row)
-            return giveUp('No entries found.');
+            return giveUp();
         
         // 0 (A) Timestamp
         // 1 (B) Announcements
@@ -46,7 +56,7 @@
         
         // the date is not today.
         if (row.c[3].v.toDateString() != new Date().toDateString())
-            return giveUp("Today's announcements have not yet been published.");
+            return giveUp();
         
         announcements.innerText = parseAnnouncements(row.c[1].v);
     }
