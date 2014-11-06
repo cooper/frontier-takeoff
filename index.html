@@ -107,18 +107,18 @@
         
         // 0 (A) Timestamp
         // 1 (B) Username
-        // 2 (C) Breakfast
-        // 3 (D) Lunch
+        // 2 (C) Lunch
+        // 3 (D) Breakfast
         // 4 (E) Salad choice
         // 5 (F) Date it applies to
         
         // set lunch and breakfast.
-        bkfst.innerText = row.c[2].v;
-        lunch.innerText = row.c[3].v;
+        bkfst.innerText = row.c[3].v;
+        lunch.innerText = row.c[2].v;
         
         // if there's a salad choice, append that.
         if (row.c[4].v)
-            lunch.innerText += "\nor " + row.c[4].v + ' salad';
+            lunch.innerText += "\n\n" + row.c[4].v + ' salad';
         
         // show these if there's info to put there.
         if (bkfst.innerText || lunch.innerText) {
@@ -140,6 +140,7 @@
     
     body {
         font-family: 'Open Sans';
+        background-color: #333;
     }
     
     #to-sidebar, #to-left {
@@ -151,10 +152,11 @@
     #to-sidebar {
         float: right;
         width: calc(100% - 920px);
-        border-left: 1px solid #afa0a0;
+        border-left: 1px solid #111;
         right: 0;
         z-index: 1;
         overflow-y: auto;
+        background-color: #fff;
     }
     
     #to-left {
@@ -168,17 +170,45 @@
         display: block;
     }
     
-    #to-announcements, #to-meetings, #to-meals {
+    .th-sidebar-section {
         padding: 10px;
         display: none;
     }
     
+    #to-meals {
+        padding: 0;
+    }
+    
     #to-sidebar h2 {
-        background-color:  #d64141;
+        background-color: #d64141;
         padding: 10px;
         color: #fff;
         font-size: 20px;
         display: none;
+        height: 25px;
+    }
+    
+    #to-menu-table {
+        border-collapse: collapse;
+    }
+    
+    #to-menu-table td {
+        padding: 5px 10px;
+        width: 50%;
+        vertical-align: top;
+    }
+    
+    #to-menu-table th {
+        color: #fff;
+        text-align: left;
+        vertical-align: middle;
+        padding: 10px;
+        font-size: 20px;
+        height: 25px;
+    }
+    
+    #to-breakfast {
+        border-right: 1px dashed #ccc;
     }
     
 </style>
@@ -189,22 +219,27 @@
         <img id="to-sidebar-logo" src="header.png" alt="Frontier" />
         
         <h2 id="to-announcements-header">Announcements</h2>
-        <div id="to-announcements"></div>
+        <div class="th-sidebar-section" id="to-announcements"></div>
         
         <h2 id="to-meetings-header">Meetings</h2>
-        <div id="to-meetings"></div>
-
-        <h2 id="to-meals-header">Meals</h2>
-        <div id="to-meals">
-            <h3>Breakfast</h3>
-            <span id="to-breakfast"></span>
-            <h3 style="margin-top: 10px">Lunch</h3>
-            <span id="to-lunch"></span>
-        </div>
+        <div class="th-sidebar-section" id="to-meetings"></div>
         
+        <!--<h2 id="to-meals-header">Meals</h2>-->
+        <div class="th-sidebar-section" id="to-meals">
+            <table id="to-menu-table">
+            <tr style="background-color: #d64141">
+                <th>Breakfast</th>
+                <th>Lunch</th>
+            </tr>
+            <tr>
+                <td id="to-breakfast"></td>
+                <td id="to-lunch"></td>
+            </tr>
+            </table>
+        </div>
     </div>
     <div id="to-left">
-        <iframe frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=ffffff" name="_symFrame" width="920px" height="100%"></iframe>
+        <iframe frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=333333" name="_symFrame" width="920px" height="100%"></iframe>
     </div>
 </body>
 </html>
