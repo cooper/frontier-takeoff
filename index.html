@@ -121,10 +121,8 @@
             lunch.innerText += "\n\n" + row.c[4].v + ' salad';
         
         // show these if there's info to put there.
-        if (bkfst.innerText || lunch.innerText) {
+        if (bkfst.innerText || lunch.innerText)
             meals.setStyle('display', 'block');
-            $('to-meals-header').setStyle('display', 'block');
-        }
         
     }
 
@@ -224,7 +222,6 @@
         <h2 id="to-meetings-header">Meetings</h2>
         <div class="th-sidebar-section" id="to-meetings"></div>
         
-        <!--<h2 id="to-meals-header">Meals</h2>-->
         <div class="th-sidebar-section" id="to-meals">
             <table id="to-menu-table">
             <tr style="background-color: #d64141">
