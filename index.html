@@ -81,16 +81,11 @@
         announcements.innerText = row.c[1].v;
         meetings.innerText = row.c[4].v;
         
-        // show these if there's info to put there.
-        if (announcements.innerText) {
-            announcements.setStyle('display', 'block');
-            $('to-announcements-header').setStyle('display', 'block');
-        }
+        // only show meetings if there are any.
         if (meetings.innerText) {
             meetings.setStyle('display', 'block');
             $('to-meetings-header').setStyle('display', 'block');
         }
-        
         
     }
     
@@ -169,9 +164,8 @@
         display: none;
     }
     
-    #to-meals {
-        padding: 0;
-    }
+    #to-meals { padding: 0; }
+    #to-announcements { display: block; }
     
     #to-sidebar h2 {
         background-color: #d64141;
@@ -213,7 +207,9 @@
         <img id="to-sidebar-logo" src="header.png" alt="Frontier" />
         
         <h2 id="to-announcements-header">Announcements</h2>
-        <div class="th-sidebar-section" id="to-announcements"></div>
+        <div class="th-sidebar-section" id="to-announcements">
+            Today's announcements have not yet been posted.
+        </div>
         
         <h2 id="to-meetings-header">Meetings</h2>
         <div class="th-sidebar-section" id="to-meetings"></div>
