@@ -11,10 +11,7 @@
         mealsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs/gviz/tq?tq=';
     
     // this is basically a trick to avoid using Google's huge APIs for something so simple.
-    var google = { visualization: { Query: {
-        setResponse: function (res) { handleResponse(res); } 
-    } } };
-    
+    var google = { visualization: { Query: { setResponse: handleResponse } } };
     
     var d = new Date(),
         dateStr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
