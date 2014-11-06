@@ -36,8 +36,6 @@
         
         // inject a script tag for Google's spreadsheet APIs.
         var url = mealsQueryURL + encodeURIComponent(query);
-        console.log(query);
-        console.log(url);
         var script  = new Element('script', {
             src:   url,
             type: 'text/javascript'
@@ -64,7 +62,6 @@
         // consider: if not logged in, this will be a redirect...
         // how will Chrome handle a <script> tag leading to text/html?
         // probably just won't do anything.
-        console.log(res);
                 
         // the row will be the first and only row, since the query
         // limits to one result.
@@ -98,7 +95,6 @@
     }
     
     function handleMenuResponse (res) {
-        console.log('meals?', res);
         var meals = $('to-meals'),
             lunch = $('to-lunch'),
             bkfst = $('to-breakfast'),
