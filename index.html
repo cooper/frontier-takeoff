@@ -7,32 +7,37 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico" />
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
-    var announcementsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw/gviz/tq?tq=',
-        mealsQueryURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs/gviz/tq?tq=';
+    
+    var baseURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/';
+    
+    var announcementsID = '1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw',
+        mealsID         = '1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs';
     
     // this is basically a trick to avoid using Google's huge APIs for something so simple.
     var google = { visualization: { Query: { setResponse: handleResponse } } };
     
-    var d = new Date(),
-        dateStr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    var d = new Date();
+    var dateStr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     
     function injectAnnouncementsRequest () {
         var query = "select * where D=date '"+dateStr+"' order by A desc limit 1";
         
         // inject a script tag for Google's spreadsheet APIs.
+        query = encodeURIComponent(query);
         var script  = new Element('script', {
-            src:  announcementsQueryURL + encodeURIComponent(query),
+            src:  baseURL + announcementsID + '/gviz/tq?tq=' + query,
             type: 'text/javascript'
         });
-        document.head.adopt(script);
         
+        document.head.adopt(script);
     }
     
     function injectMealsRequest () {
         var query = "select * where F=date '"+dateStr+"' order by A desc limit 1";
         
         // inject a script tag for Google's spreadsheet APIs.
-        var url = mealsQueryURL + encodeURIComponent(query);
+        query = encodeURIComponent(query);
+        var url = baseURL + mealsID + '/gviz/tq?tq=' + query;
         var script  = new Element('script', {
             src:   url,
             type: 'text/javascript'
@@ -75,11 +80,11 @@
         if (row.c[3].v.toDateString() != new Date().toDateString())
             return;
         
-        announcements.innerText = row.c[1].v;
-        meetings.innerText = row.c[4].v;
+        if (row.c[1].v)
+            announcements.innerText = row.c[1].v;
         
-        // only show meetings if there are any.
-        if (meetings.innerText) {
+        if (row.c[4].v) {
+            meetings.innerText = row.c[4].v;
             meetings.setStyle('display', 'block');
             $('to-meetings-header').setStyle('display', 'block');
         }
@@ -101,13 +106,10 @@
         // 4 (E) Salad choice
         // 5 (F) Date it applies to
         
-        // set lunch and breakfast.
-        bkfst.innerText = row.c[3].v;
-        lunch.innerText = row.c[2].v;
-        
-        // if there's a salad choice, append that.
-        if (row.c[4].v)
-            lunch.innerText += "\n\n" + row.c[4].v + ' salad';
+        // set breakfast, lunch, and salad.
+        if (row.c[3].v) bkfst.innerText = row.c[3].v;
+        if (row.c[2].v) lunch.innerText = row.c[2].v;
+        if (row.c[4].v) lunch.innerText += "\n\n" + row.c[4].v + ' salad';
         
         // show these if there's info to put there.
         if (bkfst.innerText || lunch.innerText)
