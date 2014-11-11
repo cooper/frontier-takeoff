@@ -4,13 +4,12 @@
 <meta name="studentconfig" contents="{ 'lcs_host': '172.16.1.73', 'lcs_port': 8080, 'channel': 1228, 'change_channel': false, 'allow_prefs': false }" />
 <title>Frontier Takeoff</title>
 <script type="text/javascript" src="mootools.js"></script>
-<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<link rel="icon" type="image/png" href="falcon.png" />
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
     
-    var baseURL = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/';
-    
-    var announcementsID = '1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw',
+    var baseURL         = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/',
+        announcementsID = '1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw',
         mealsID         = '1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs';
     
     // this is basically a trick to avoid using Google's huge APIs for something so simple.
@@ -116,10 +115,10 @@
             meals.setStyle('display', 'block');
         
     }
-
     
     document.addEvent('domready', injectAnnouncementsRequest);
     document.addEvent('domready', injectMealsRequest);
+
 </script>
 <style type="text/css">
     * {
@@ -142,6 +141,7 @@
     #to-sidebar {
         float: right;
         width: calc(100% - 920px);
+        max-width: 450px;
         border-left: 1px solid #111;
         right: 0;
         z-index: 1;
@@ -153,6 +153,7 @@
         width: 900px;
         left: 0;
         z-index: 0;
+        background: url(falcon.png) center 30% no-repeat #333;
     }
     
     #to-sidebar-logo {
@@ -205,6 +206,7 @@
         width: 920px;
         height: 100%;
         overflow: hidden;
+        background: transparent !important;
     }
     
 </style>
@@ -236,7 +238,8 @@
         </div>
     </div>
     <div id="to-left">
-        <iframe scrolling="no" frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=333333" name="_symFrame"></iframe>
+        <iframe scrolling="no" frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=333333" name="_symFrame">
+        </iframe>
     </div>
 </body>
 </html>
