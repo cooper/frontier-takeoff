@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="studentconfig" contents="{ 'lcs_host': '172.16.1.73', 'lcs_port': 8080, 'channel': 1228, 'change_channel': false, 'allow_prefs': false }" />
-<title>Frontier Takeoff</title>
+<title>Falcon Takeoff</title>
 <script type="text/javascript" src="mootools.js"></script>
 <link rel="icon" type="image/png" href="falcon.png" />
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
@@ -79,13 +79,16 @@
         if (row.c[3].v.toDateString() != new Date().toDateString())
             return;
         
-        if (row.c[1].v)
+        if (row.c[1].v) {
             announcements.innerText = row.c[1].v;
+            announcements.boldifyToday();
+        }
         
         if (row.c[4].v) {
             meetings.innerText = row.c[4].v;
             meetings.setStyle('display', 'block');
             $('to-meetings-header').setStyle('display', 'block');
+            meetings.boldifyToday();
         }
         
         $('to-announcements-header').setStyle('display', 'block');
@@ -116,7 +119,23 @@
         
     }
     
-    document.addEvent('domready', injectAnnouncementsRequest);
+    Element.implement('boldifyToday', function () {
+        var day = [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
+        ][d.getDay()];
+        var re = new RegExp(day, 'g');
+        console.log(re);
+        this.innerHTML = this.innerHTML.replace(re, '<b>' + day + '</b>');
+        this.innerHTML = this.innerHTML.replace(/Today/g, '<b>Today</b>');        
+    });
+    
+    //document.addEvent('domready', injectAnnouncementsRequest);
     document.addEvent('domready', injectMealsRequest);
 
 </script>
@@ -136,6 +155,15 @@
         position: fixed; 
         top: 0;
         bottom: 0;
+    }
+    
+    div.sad-falcon {
+        text-align: center;
+        margin: 20px;
+    }
+    
+    div.sad-falcon img {
+        border: 5px solid #d64141;
     }
     
     #to-sidebar {
@@ -218,7 +246,10 @@
         
         <h2 id="to-announcements-header">Announcements</h2>
         <div class="th-sidebar-section" id="to-announcements">
-            Today's announcements have not yet been posted.
+            <div class="sad-falcon">
+                <img src="sad-falcon.jpg" alt=":(" /><br /><br />
+                <b>Today's announcements have not yet been posted.</b>
+            </div>
         </div>
         
         <h2 id="to-meetings-header">Meetings</h2>
