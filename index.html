@@ -50,8 +50,10 @@
         // some error occurred.
         if (res.status != 'ok') return;
         
-        if (res.table.cols[1].label == 'General announcements')
-            handleAnnouncementsResponse(res);
+        if (res.table.cols[1].label == 'General announcements') {
+            if (!handleAnnouncementsResponse(res))
+                $('sad-falcon').setStyle('display', 'block');
+        }
         else
             handleMenuResponse(res);
     }
@@ -92,6 +94,7 @@
         }
         
         $('to-announcements-header').setStyle('display', 'block');
+        return true;
     }
     
     function handleMenuResponse (res) {
@@ -117,6 +120,7 @@
         if (bkfst.innerText || lunch.innerText)
             meals.setStyle('display', 'block');
         
+        return true;
     }
     
     Element.implement('boldifyToday', function () {
@@ -135,8 +139,8 @@
         this.innerHTML = this.innerHTML.replace(/Today/g, '<b>Today</b>');        
     });
     
-    //document.addEvent('domready', injectAnnouncementsRequest);
-    //document.addEvent('domready', injectMealsRequest);
+    document.addEvent('domready', injectAnnouncementsRequest);
+    document.addEvent('domready', injectMealsRequest);
 
 </script>
 <style type="text/css">
@@ -157,12 +161,13 @@
         bottom: 0;
     }
     
-    div.sad-falcon {
+    #sad-falcon {
         text-align: center;
         margin: 20px;
+        display: none;
     }
     
-    div.sad-falcon img {
+    #sad-falcon img {
         border: 5px solid #d64141;
     }
     
@@ -246,7 +251,7 @@
         
         <h2 id="to-announcements-header">Announcements</h2>
         <div class="th-sidebar-section" id="to-announcements">
-            <div class="sad-falcon">
+            <div id="sad-falcon">
                 <img src="sad-falcon.jpg" alt=":(" /><br /><br />
                 <b>Today's announcements have not been posted.</b>
             </div>
