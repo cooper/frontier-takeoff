@@ -1,48 +1,51 @@
 <!doctype html>
 <html>
 <head>
-<meta name="studentconfig" contents="{ 'lcs_host': '172.16.1.73', 'lcs_port': 8080, 'channel': 1228, 'change_channel': false, 'allow_prefs': false }" />
-<title>Falcon Takeoff</title>
-<script type="text/javascript" src="mootools.js"></script>
-<script type="text/javascript" src="main.js"></script>
-<link rel="icon" type="image/png" href="falcon.png" />
-<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+    <meta name="studentconfig" contents="{ 'lcs_host': '172.16.1.73', 'lcs_port': 8080, 'channel': 1228, 'change_channel': false, 'allow_prefs': false }" />
+    <title>Falcon Takeoff</title>
+    <script type="text/javascript" src="mootools.js"></script>
+    <script type="text/javascript" src="takeoff.js"></script>
+    <link rel="icon" type="image/png" href="falcon.png" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
-    
 <body>
-    <div id="to-sidebar">
-        <img id="to-sidebar-logo" src="header.png" alt="Frontier" />
-        <div id="to-sidebar-info">
-            <div id="to-sidebar-temp"></div>
-            <h2 id="to-announcements-header">Announcements</h2>
-        </div>
-        <div class="th-sidebar-section" id="to-announcements">
-            <div id="sad-falcon">
-                <img src="sad-falcon.jpg" alt=":(" /><br /><br />
-                <b>Today's announcements have not been posted.</b>
-            </div>
-        </div>
-        
-        <h2 id="to-meetings-header">Meetings</h2>
-        <div class="th-sidebar-section" id="to-meetings"></div>
-        
-        <div class="th-sidebar-section" id="to-meals">
-            <table id="to-menu-table">
-            <tr style="background-color: #d64141">
-                <th>Breakfast</th>
-                <th>Lunch</th>
-            </tr>
-            <tr>
-                <td id="to-breakfast"></td>
-                <td id="to-lunch"></td>
-            </tr>
-            </table>
+
+<div id="to-sidebar">
+    <img id="to-sidebar-logo" src="header.png" alt="Frontier" />
+    <div id="to-sidebar-info">
+        <div id="to-sidebar-temp"></div>
+        <h2 id="to-announcements-header">Announcements</h2>
+    </div>
+    <div class="th-sidebar-section" id="to-announcements">
+        <div id="sad-falcon">
+            <img src="sad-falcon.jpg" alt=":(" /><br /><br />
+            <b>Today's announcements have not been posted.</b>
         </div>
     </div>
-    <div id="to-left">
-        <iframe scrolling="no" frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=333333" name="_symFrame">
-        </iframe>
+
+    <h2 id="to-meetings-header">
+        Meetings<span style="color: #ffb0b0; font-size: 60%">&nbsp;&nbsp;this week</span>
+    </h2>
+    <div class="th-sidebar-section" id="to-meetings"></div>
+
+    <div class="th-sidebar-section" id="to-meals">
+        <table id="to-menu-table">
+        <tr style="background-color: #d64141">
+            <th>Breakfast</th>
+            <th>Lunch</th>
+        </tr>
+        <tr>
+            <td id="to-breakfast"></td>
+            <td id="to-lunch"></td>
+        </tr>
+        </table>
     </div>
+</div>
+<div id="to-left">
+    <iframe scrolling="no" frameborder="0" noresize="noresize" src="http://www.symbaloo.com/embed/home1982?widget=26&bgcolor=333333" name="_symFrame">
+    </iframe>
+</div>
+    
 </body>
 </html>

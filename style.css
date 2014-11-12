@@ -37,18 +37,25 @@ body {
     background-color: #fff;
 }
 
-.to-sidebar-info {
+#to-sidebar-info, #to-sidebar h2, #to-sidebar th {
+    cursor: default;
+    -webkit-user-select: none;
+}
+
+#to-weather-icon {
+    font-size: 90%;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 10px;
+    color: #fff;
+    padding: 0 8px;
     float: right;
     height: 45px;
     min-width: 29px;
-    line-height: 45px;
-    padding: 0 8px;
-    text-align: center;
-    font-weight: bold;
-    color: #fff;
-    background-color: #b52b2b;
-    margin-left: 10px;
-    font-size: small;
+    line-height: 65px;
+    
+    background: #b52b2b no-repeat center -4px;
+    background-size: 85%;
 }
 
 #to-left {
