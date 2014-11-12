@@ -1,0 +1,112 @@
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: 'Open Sans';
+    background-color: #333;
+}
+
+#to-sidebar, #to-left {
+    height: 100%;
+    position: fixed; 
+    top: 0;
+    bottom: 0;
+}
+
+#sad-falcon {
+    text-align: center;
+    margin: 20px;
+    display: none;
+}
+
+#sad-falcon img {
+    border: 5px solid #d64141;
+}
+
+#to-sidebar {
+    float: right;
+    width: calc(100% - 920px);
+    max-width: 450px;
+    border-left: 1px solid #111;
+    right: 0;
+    z-index: 1;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+.to-sidebar-info {
+    float: right;
+    height: 45px;
+    min-width: 29px;
+    line-height: 45px;
+    padding: 0 8px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    background-color: #b52b2b;
+    margin-left: 10px;
+    font-size: small;
+}
+
+#to-left {
+    width: 900px;
+    left: 0;
+    z-index: 0;
+    background: url(falcon.png) center 30% no-repeat #333;
+}
+
+#to-sidebar-logo {
+    width: 100%;
+    display: block;
+}
+
+.th-sidebar-section {
+    padding: 10px;
+    display: none;
+}
+
+#to-meals { padding: 0; }
+#to-announcements { display: block; }
+
+#to-sidebar h2 {
+    background-color: #d64141;
+    padding: 10px;
+    color: #fff;
+    font-size: 20px;
+    display: none;
+    height: 25px;
+}
+
+#to-menu-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#to-menu-table td {
+    padding: 5px 10px;
+    width: 50%;
+    vertical-align: top;
+}
+
+#to-menu-table th {
+    color: #fff;
+    text-align: left;
+    vertical-align: middle;
+    padding: 10px;
+    font-size: 20px;
+    height: 25px;
+}
+
+#to-breakfast {
+    border-right: 1px dashed #ccc;
+}
+
+iframe {
+    width: 920px;
+    height: 100%;
+    overflow: hidden;
+    background: transparent !important;
+}
