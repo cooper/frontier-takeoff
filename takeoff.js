@@ -9,10 +9,8 @@ var baseURL         = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets
     mealsID         = '1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs';
 
 var longDays = [
-    'Sunday',  'Monday',
-    'Tuesday', 'Wednesday',
-    'Thursday','Friday',
-    'Saturday'
+    'Sunday',  'Monday', 'Tuesday', 'Wednesday',
+    'Thursday','Friday', 'Saturday'
 ], shortDays = [ 'Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat' ];
 
 // this is basically a trick to avoid using Google's huge APIs for something so simple.
@@ -64,6 +62,7 @@ function handleResponse (res) {
 }
 
 function handleAnnouncementsResponse (res) {
+    $('to-announcements-header').setStyle('display', 'block');
     var announcements = $('to-announcements'),
         meetings      = $('to-meetings');
 
@@ -98,7 +97,6 @@ function handleAnnouncementsResponse (res) {
         meetings.boldifyToday();
     }
 
-    $('to-announcements-header').setStyle('display', 'block');
     return true;
 }
 
@@ -143,6 +141,10 @@ Element.implement('prependChild', function (el) {
 
 // WEATHER AND DATE
 
+function fahrenheit (temp) {
+    return Math.round((273.5 - temp) * (9/5) + 32);
+}
+
 function fetchWeather () {
     var url = 'http://api.openweathermap.org/data/2.5/weather?q=Chalmers,IN&callback=gotWeather';
     var script = new Element('script', { src: url, type: 'text/javascript' });
@@ -151,11 +153,18 @@ function fetchWeather () {
 
 function gotWeather (data) {
     console.log(data);
-    var fahr = Math.round((273.5 - data.main.temp) * (9/5) + 32);
+    var fahr = fahrenheit(data.main.temp);
     var el = new Element('div', { id: 'to-weather-icon' });
     el.innerHTML = '&nbsp;' + fahr + 'º';
     var icon = data.weather[0].icon;
     el.setStyle('background-image', 'url(http://openweathermap.org/img/w/'+icon+'.png)');
+    el.setAttribute('title',
+        data.weather[0].description                     +  "\n" +
+        'Humidity: ' + data.main.humidity               + "%\n" +
+        'Now:      ' + fahr                             + "º\n" +
+        'High:     ' + fahrenheit(data.main.temp_max)   + "º\n" +
+        'Low:      ' + fahrenheit(data.main.temp_min)   + "º"
+    );
     $('to-sidebar-info').prependChild(el);
 }
 
