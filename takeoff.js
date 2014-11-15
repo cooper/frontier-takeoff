@@ -141,29 +141,26 @@ Element.implement('prependChild', function (el) {
 
 // WEATHER AND DATE
 
-function fahrenheit (temp) {
-    return Math.round((273.5 - temp) * (9/5) + 32);
-}
+var R = Math.round;
 
 function fetchWeather () {
-    var url = 'http://api.openweathermap.org/data/2.5/weather?q=Chalmers,IN&callback=gotWeather';
+    var url = 'http://api.openweathermap.org/data/2.5/weather?q=Chalmers,IN&units=imperial&callback=gotWeather';
     var script = new Element('script', { src: url, type: 'text/javascript' });
     document.head.appendChild(script);
 }
 
 function gotWeather (data) {
     console.log(data);
-    var fahr = fahrenheit(data.main.temp);
     var el = new Element('div', { id: 'to-weather-icon' });
-    el.innerHTML = '&nbsp;' + fahr + 'º';
+    el.innerHTML = '&nbsp;' + R(data.main.temp) + 'º';
     var icon = data.weather[0].icon;
     el.setStyle('background-image', 'url(http://openweathermap.org/img/w/'+icon+'.png)');
     el.setAttribute('title',
-        data.weather[0].description                     +  "\n" +
-        'Humidity: ' + data.main.humidity               + "%\n" +
-        'Now:      ' + fahr                             + "º\n" +
-        'High:     ' + fahrenheit(data.main.temp_max)   + "º\n" +
-        'Low:      ' + fahrenheit(data.main.temp_min)   + "º"
+        data.weather[0].description             +  "\n" +
+        'Humidity: ' + data.main.humidity       + "%\n" +
+        'Now:      ' + R(data.main.temp)        + "º\n" +
+        'High:     ' + R(data.main.temp_max)    + "º\n" +
+        'Low:      ' + R(data.main.temp_min)    + "º"
     );
     $('to-sidebar-info').prependChild(el);
 }
