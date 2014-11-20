@@ -150,17 +150,16 @@ function fetchWeather () {
 }
 
 function gotWeather (data) {
-    console.log(data);
     var el = new Element('div', { id: 'to-weather-icon' });
-    el.innerHTML = '&nbsp;' + R(data.main.temp) + 'º';
+    el.innerHTML = '&nbsp;' + R(data.main.temp) + "\xB0";
     var icon = data.weather[0].icon;
     el.setStyle('background-image', 'url(http://openweathermap.org/img/w/'+icon+'.png)');
     el.setAttribute('title',
-        data.weather[0].description             +  "\n" +
-        'Humidity: ' + data.main.humidity       + "%\n" +
-        'Now:      ' + R(data.main.temp)        + "º\n" +
-        'High:     ' + R(data.main.temp_max)    + "º\n" +
-        'Low:      ' + R(data.main.temp_min)    + "º"
+        data.weather[0].description             +  "\n"     +
+        'Humidity: ' + data.main.humidity       + "%\n"     +
+        'Now:      ' + R(data.main.temp)        + "\xB0\n"  +
+        'High:     ' + R(data.main.temp_max)    + "\xB0\n"  +
+        'Low:      ' + R(data.main.temp_min)    + "\xB0"
     );
     $('to-sidebar-info').prependChild(el);
 }
