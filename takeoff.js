@@ -7,9 +7,7 @@
 var baseURL         = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/',
     announcementsID = '1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw',
     mealsID         = '1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs',
-    lunchMenuDayURL = '/jshs/lunchmenu/api/fetch-day.php';
-    // lunch menu day URL is relative to CustomWeb, but this variable
-    // can be replaced with an absolute URL if located somewhere else
+    lunchMenuDayURL = 'http://frontierschools.cloudns.pw/jshs/lunchmenu/api/fetch-day.php';
 
 // this variable can be either _lmm or _gapps,
 // to use either Google Forms or Lunch Menu Manager.
