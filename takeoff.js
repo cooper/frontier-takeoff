@@ -1,12 +1,19 @@
 [   injectAnnouncementsRequest,
-    //injectMealsRequest,
+    injectMealsRequest,
     fetchWeather,
     insertDay
 ].each(function (f) { document.addEvent('domready', f); });
 
 var baseURL         = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets/d/',
     announcementsID = '1WdvyXz6LbB12GknlRO0QY8vFHTkCX4zoHkQ6i10Xcfw',
-    mealsID         = '1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs';
+    mealsID         = '1a2G6_26ygUNKcFdf90SQYV9noIUvaTufkcBUo6s0zBs',
+    lunchMenuDayURL = '/jshs/lunchmenu/api/fetch-day.php';
+    // lunch menu day URL is relative to CustomWeb, but this variable
+    // can be replaced with an absolute URL if located somewhere else
+
+// this variable can be either _lmm or _gapps,
+// to use either Google Forms or Lunch Menu Manager.
+var injectMealsRequest = injectMealsRequest_lmm;
 
 var longDays = [
     'Sunday',  'Monday', 'Tuesday', 'Wednesday',
@@ -34,7 +41,7 @@ function injectAnnouncementsRequest () {
 
 // MEALS AND ANNOUNCEMENTS
 
-function injectMealsRequest () {
+function injectMealsRequest_gapps () {
     var query = "select * where F=date '"+dateStr+"' order by A desc limit 1";
 
     // inject a script tag for Google's spreadsheet APIs.
@@ -45,6 +52,16 @@ function injectMealsRequest () {
         type: 'text/javascript'
     });
 
+    document.head.adopt(script);
+}
+
+// this one is for the Lmm (lunch menu manager)
+function injectMealsRequest () {
+    var script  = new Element('script', {
+        src:   lunchMenuDayURL + '?callback=handleLmmResponse',
+        type: 'text/javascript'
+    });
+    
     document.head.adopt(script);
 }
 
@@ -60,6 +77,21 @@ function handleResponse (res) {
     }
     else
         handleMenuResponse(res);
+}
+
+// this handle for lunch menu manager will take that
+// data and mimics the Google Sheets API
+function handleLmmResponse (res) {
+    var rows = [
+        { c: [
+            null,               // Timestamp
+            null,               // Username
+            res.lunch,
+            res.breakfast,
+            res.salad
+        ] }
+    ];
+    handleMenuResponse({ table: { rows: rows } });
 }
 
 function handleAnnouncementsResponse (res) {
