@@ -83,9 +83,9 @@ function handleLmmResponse (res) {
     var row = { c: [
         null,               // Timestamp
         null,               // Username
-        res.lunch,
-        res.breakfast,
-        res.salad
+        { v: res.lunch },
+        { v: res.breakfast },
+        { v: res.salad }
     ] };
 
     handleMenuResponse({ table: { rows: [ row ] }});
