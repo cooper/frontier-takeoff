@@ -1,5 +1,5 @@
 [   injectAnnouncementsRequest,
-    injectMealsRequest,
+    //injectMealsRequest,
     fetchWeather,
     insertDay
 ].each(function (f) { document.addEvent('domready', f); });
@@ -51,7 +51,8 @@ function injectMealsRequest () {
 function handleResponse (res) {
 
     // some error occurred.
-    if (res.status != 'ok') return;
+    if (res.status != 'ok')
+        return;
 
     if (res.table.cols[1].label == 'General announcements') {
         if (!handleAnnouncementsResponse(res))
@@ -73,7 +74,8 @@ function handleAnnouncementsResponse (res) {
     // the row will be the first and only row, since the query
     // limits to one result.
     var row = res.table.rows[0];
-    if (!row) return;
+    if (!row)
+        return;
 
     // 0 (A) Timestamp
     // 1 (B) Announcements
@@ -105,7 +107,8 @@ function handleMenuResponse (res) {
         lunch = $('to-lunch'),
         bkfst = $('to-breakfast'),
         row   = res.table.rows[0];
-    if (!row) return;
+    if (!row)
+        return;
 
     // 0 (A) Timestamp
     // 1 (B) Username
@@ -129,7 +132,7 @@ function handleMenuResponse (res) {
 // EXTENSIONS
 
 Element.implement('boldifyToday', function () {
-    var day = longDays[d.getDay()];
+    var day = longDays[ d.getDay() ];
     var re = new RegExp(day, 'g');
     this.innerHTML = this.innerHTML.replace(re, '<b>' + day + '</b>');
     this.innerHTML = this.innerHTML.replace(/Today/g, '<b>Today</b>');        
@@ -153,7 +156,7 @@ function gotWeather (data) {
     var el = new Element('div', { id: 'to-weather-icon' });
     el.innerHTML = '&nbsp;' + R(data.main.temp) + "\xB0";
     var icon = data.weather[0].icon;
-    el.setStyle('background-image', 'url(http://openweathermap.org/img/w/'+icon+'.png)');
+    el.setStyle('background-image', 'url(http://openweathermap.org/img/w/' + icon + '.png)');
     el.setAttribute('title',
         data.weather[0].description             +  "\n"     +
         'Humidity: ' + data.main.humidity       + "%\n"     +
