@@ -13,7 +13,7 @@ var baseURL         = 'https://docs.google.com/a/frontier.k12.in.us/spreadsheets
 
 // this variable can be either _lmm or _gapps,
 // to use either Google Forms or Lunch Menu Manager.
-var injectMealsRequest = injectMealsRequest_lmm;
+//var injectMealsRequest = injectMealsRequest_lmm;
 
 var longDays = [
     'Sunday',  'Monday', 'Tuesday', 'Wednesday',
@@ -56,7 +56,7 @@ function injectMealsRequest_gapps () {
 }
 
 // this one is for the Lmm (lunch menu manager)
-function injectMealsRequest_lmm () {
+function injectMealsRequest () {
     var script  = new Element('script', {
         src:   lunchMenuDayURL + '?callback=handleLmmResponse',
         type: 'text/javascript'
