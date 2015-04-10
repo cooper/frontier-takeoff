@@ -80,18 +80,15 @@ function handleResponse (res) {
 // this handle for lunch menu manager will take that
 // data and mimics the Google Sheets API
 function handleLmmResponse (res) {
-    console.log(res);
-    var rows = [
-        { c: [
-            null,               // Timestamp
-            null,               // Username
-            res.lunch,
-            res.breakfast,
-            res.salad
-        ] }
-    ];
-    console.log(rows);
-    handleMenuResponse({ table: { rows: rows } });
+    var rows = { c: [
+        null,               // Timestamp
+        null,               // Username
+        res.lunch,
+        res.breakfast,
+        res.salad
+    ] };
+
+    handleMenuResponse({ table: { rows: [ row ] }});
 }
 
 function handleAnnouncementsResponse (res) {
@@ -135,6 +132,7 @@ function handleAnnouncementsResponse (res) {
 }
 
 function handleMenuResponse (res) {
+    console.log('here: ' + res);
     var meals = $('to-meals'),
         lunch = $('to-lunch'),
         bkfst = $('to-breakfast'),
