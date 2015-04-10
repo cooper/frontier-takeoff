@@ -80,7 +80,7 @@ function handleResponse (res) {
 // this handle for lunch menu manager will take that
 // data and mimics the Google Sheets API
 function handleLmmResponse (res) {
-    var rows = { c: [
+    var row = { c: [
         null,               // Timestamp
         null,               // Username
         res.lunch,
