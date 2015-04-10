@@ -56,7 +56,7 @@ function injectMealsRequest_gapps () {
 }
 
 // this one is for the Lmm (lunch menu manager)
-function injectMealsRequest () {
+function injectMealsRequest_lmm () {
     var script  = new Element('script', {
         src:   lunchMenuDayURL + '?callback=handleLmmResponse',
         type: 'text/javascript'
