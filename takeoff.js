@@ -80,6 +80,7 @@ function handleResponse (res) {
 // this handle for lunch menu manager will take that
 // data and mimics the Google Sheets API
 function handleLmmResponse (res) {
+    console.log(res);
     var rows = [
         { c: [
             null,               // Timestamp
@@ -89,6 +90,7 @@ function handleLmmResponse (res) {
             res.salad
         ] }
     ];
+    console.log(rows);
     handleMenuResponse({ table: { rows: rows } });
 }
 
